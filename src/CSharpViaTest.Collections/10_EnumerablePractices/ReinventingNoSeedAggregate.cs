@@ -37,7 +37,17 @@ namespace CSharpViaTest.Collections._10_EnumerablePractices
             this IEnumerable<TSource> source,
             Func<TSource, TSource, TSource> func)
         {
-            throw new NotImplementedException();
+            if(source == null) throw new ArgumentNullException();
+            if(func == null) throw new ArgumentNullException();
+            using(IEnumerator<TSource> enumerator = source.GetEnumerator()){
+                enumerator.MoveNext();
+                TSource seed = enumerator.Current;
+                while(enumerator.MoveNext()){
+                    TSource current = enumerator.Current;
+                    seed = func(seed,current);
+                }
+                return seed;
+            }
         }
 
         #endregion

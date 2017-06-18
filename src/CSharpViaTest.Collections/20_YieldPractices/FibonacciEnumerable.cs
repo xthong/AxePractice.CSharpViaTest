@@ -34,7 +34,17 @@ namespace CSharpViaTest.Collections._20_YieldPractices
 
         static IEnumerable<long> GetFibonacciIntegers()
         {
-            throw new NotImplementedException();
+            long current = 1;
+            long next = 1;
+            yield return current;
+            yield return next;
+            while (true)
+            {
+                long newValue = current + next;
+                yield return newValue;
+                current = next;
+                next = newValue;
+            }
         }
         
         #endregion

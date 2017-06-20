@@ -37,14 +37,13 @@ namespace CSharpViaTest.Collections._10_EnumerablePractices
             this IEnumerable<TSource> source,
             Func<TSource, TSource, TSource> func)
         {
-            if(source == null) throw new ArgumentNullException();
-            if(func == null) throw new ArgumentNullException();
-            using(IEnumerator<TSource> enumerator = source.GetEnumerator()){
-                enumerator.MoveNext();
-                TSource seed = enumerator.Current;
+            if(source == null) throw new ArgumentNullException(nameof(source));
+            if(func == null) throw new ArgumentNullException(nameof(func));
+            using(var enumerator = source.GetEnumerator()){
+                if(!enumerator.MoveNext()){ throw new InvalidOperationException();}
+                var seed = enumerator.Current;
                 while(enumerator.MoveNext()){
-                    TSource current = enumerator.Current;
-                    seed = func(seed,current);
+                    seed = func(seed, enumerator.Current);
                 }
                 return seed;
             }

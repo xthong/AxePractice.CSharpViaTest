@@ -32,7 +32,15 @@ namespace CSharpViaTest.OtherBCLs.HandleReflections
 
         public static string GetDescription<T>(this T value)
         {
-            throw new NotImplementedException();
+            if (value == null) throw new ArgumentNullException(nameof(value));
+            if (!(value is Enum)) throw new NotSupportedException(nameof(value));
+
+            var fieldInfo = typeof(T).GetField(value.ToString());
+            var attr = fieldInfo.GetCustomAttribute<MyEnumDescriptionAttribute>();
+
+            var description = attr == null ? value.ToString() : attr.Description;
+
+            return description;
         }
 
         #endregion
